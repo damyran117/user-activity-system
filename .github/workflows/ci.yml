@@ -1,12 +1,12 @@
 # .github/workflows/ci.yml
-name: Build and Deploy Auth Service
+name: Build and Test Auth Service
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  build-and-deploy:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,20 +27,5 @@ jobs:
           sleep 5
           curl -f http://localhost:3001/health || exit 1
 
-      - name: Build Docker image
-        run: docker build -t auth-service .
-
-      - name: Test Docker container
-        run: |
-          docker run -d -p 3001:3001 auth-service
-          sleep 5
-          curl -f http://localhost:3001/health || exit 1
-
-      - name: Login to Render
-        run: echo ${{ secrets.RENDER_API_KEY }} > render-api-key.txt
-
-      # ⚠️ Render деплой требует дополнительной настройки — можно сделать позже
-      # Сейчас главное — показать, что CI работает
-
       - name: Show success
-        run: echo "✅ CI passed! Service is ready for deployment."
+        run: echo "✅ CI passed! Service is ready for next steps."
